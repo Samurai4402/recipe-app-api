@@ -81,8 +81,8 @@ class PublicUserApiTests(TestCase):
         self.assertIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
-    def test_create_token_bad_creadentinals(self):
-        """Test returns error if creadentinals invalid."""
+    def test_create_token_bad_credentinals(self):
+        """Test returns error if credentinals invalid."""
         create_user(email='test@example.com', password='goodpass')
 
         payload = {'email': 'test@example.com', 'password': 'badpass' }
@@ -108,7 +108,7 @@ class PublicUserApiTests(TestCase):
 class PrivateUserApiTest(TestCase):
     """Test API requests that require authentication."""
 
-    def SetUp(self):
+    def setUp(self):
         self.user = create_user(
             email='test@example.com',
             password='testpass123',
