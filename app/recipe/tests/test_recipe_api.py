@@ -21,6 +21,7 @@ from recipe.serializers import (
 
 RECIPES_URL = reverse('recipe:recipe-list')
 
+
 def detail_url(recipe_id):
     """Create and return a recipe detail URL."""
     return reverse('recipe:recipe-detail', args=[recipe_id])
@@ -39,6 +40,7 @@ def create_recipe(user, **params):
 
     recipe = Recipe.objects.create(user=user, **defaults)
     return recipe
+
 
 def create_user(**params):
     """Create and return a new user"""
@@ -210,7 +212,7 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(recipe.tags.count(), 2)
         for tag in payload['tags']:
             exists = recipe.tags.filter(
-                name = tag['name'],
+                name=tag['name'],
                 user=self.user,
             ).exists()
             self.assertTrue(exists)
@@ -251,7 +253,7 @@ class PrivateRecipeAPITests(TestCase):
         new_tag = Tag.objects.get(user=self.user, name='Lunch')
         self.assertIn(new_tag, recipe.tags.all())
 
-    def  test_update_recipe_assigned_tag(self):
+    def test_update_recipe_assigned_tag(self):
         """Test assingnig existing tag when updating a recipe."""
         tag_breakfast = Tag.objects.create(user=self.user, name='Breakfast')
         recipe = create_recipe(user=self.user)
