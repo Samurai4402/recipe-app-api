@@ -109,13 +109,13 @@ class PrivateTagsApiTests(TestCase):
             time_minutes=10,
             price=Decimal('2.50'),
         )
-    
+        recipe.tags.add(tag1)
         res = self.client.get(TAGS_URL, {'assigned_only': 1})
 
         s1 = TagSerializer(tag1)
         s2 = TagSerializer(tag2)
         self.assertIn(s1.data, res.data)
-        self.assertIn(s2.data, res.data)
+        self.assertNotIn(s2.data, res.data)
 
     def test_filtered_tags_unique(self):
         """Test filtered tags retruns a unique list."""

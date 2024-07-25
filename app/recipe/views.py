@@ -37,7 +37,7 @@ from recipe import serializers
                 'ingredients',
                 OpenApiTypes.STR,
                 description='Comma separated list of ingredient IDs to filter',
-            )
+            ),
         ]
     )
 )
@@ -61,8 +61,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             tag_ids = self._params_to_ints(tags)
             queryset = queryset.filter(tags__id__in=tag_ids)
         if ingredients:
-            ingredients_ids = self._params_to_ints(ingredients)
-            queryset = queryset.filter(ingredients__id__in=ingredients_ids)
+            ingredient_ids = self._params_to_ints(ingredients)
+            queryset = queryset.filter(ingredients__id__in=ingredient_ids)
 
         return queryset.filter(
             user=self.request.user
@@ -100,7 +100,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 'assigned_only',
                 OpenApiTypes.INT, enum=[0, 1],
                 description='Filter by items assigned to recipes',
-            )
+            ),
         ]
     )
 )
@@ -113,14 +113,14 @@ class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
     permission_classes = [IsAuthenticated]
     def get_queryset(self):
         """Filter queryset to authenticated user."""
-        assingned_only = bool(
+        assigned_only = bool(
             int(self.request.query_params.get('assigned_only', 0))
         )
         queryset = self.queryset
-        if assingned_only:
+        if assigned_only:
             queryset = queryset.filter(recipe__isnull=False)
 
-        return self.queryset.filter(
+        return queryset.filter(
             user=self.request.user
         ).order_by('-name').distinct()
 
